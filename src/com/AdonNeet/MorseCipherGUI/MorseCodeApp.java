@@ -15,9 +15,11 @@ public class MorseCodeApp {
                 JFrame frame = new JFrame("Morse Code Converter");
                 frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 frame.setLayout(new BorderLayout());
-                frame.add(converterFrame.getPanel(), BorderLayout.CENTER);
+                frame.getContentPane().add(converterFrame.getPanel(), BorderLayout.CENTER);
 
-                frame.setSize(400, 300);
+
+                frame.setSize(500, 400);
+                frame.setResizable(false);
                 frame.setLocationRelativeTo(null);
                 frame.setVisible(true);
             }

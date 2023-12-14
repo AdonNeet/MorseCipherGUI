@@ -7,8 +7,8 @@ public class MorseCodeConverter implements CodeConverter {
 	private static final Map<String, String> morseCodeMap;
 
     static {
-        morseCodeMap = new HashMap<>();
-        morseCodeMap.put("A", ".-");
+        morseCodeMap = new HashMap<>(); // international morse code
+        morseCodeMap.put("A", ".-");	// each word separated by a backslash
         morseCodeMap.put("B", "-...");
         morseCodeMap.put("C", "-.-.");
         morseCodeMap.put("D", "-..");
@@ -63,28 +63,23 @@ public class MorseCodeConverter implements CodeConverter {
     }
 
     @Override
-    public String decode(String morseCode) { // masih error T_T
+    public String decode(String morseCode) { 
     	StringBuilder textBuilder = new StringBuilder();
-        String[] sentences = morseCode.split("\\\\ ");
-        for (String sentence : sentences) {
-            String[] morseWords = sentence.split("\\s+");
-            for (String morseWord : morseWords) {
-                String[] morseChars = morseWord.split("\\s");
-                for (String morseChar : morseChars) {
-                    if (morseChar.equals(".")) {
-                        textBuilder.append(" ");
-                    } else {
-                        for (Map.Entry<String, String> entry : morseCodeMap.entrySet()) {
-                            if (entry.getValue().equals(morseChar)) {
-                                textBuilder.append(entry.getKey());
-                                break;
-                            }
-                        }
-                    }
-                }
-                textBuilder.append(" ");
-            }
-            textBuilder.append(". ");
+        String[] morseChars = morseCode.split(" ");  // Pemisah antar char
+
+        for(String morseChar : morseChars) {
+        	if(morseChar.equals("\\")) {	// mendeteksi pergantian kata
+        		textBuilder.append(" ");
+        	} else if(morseChar.equals("\\\\")) {	// mendeteksi tanda titik, pergantian kalimat
+        		textBuilder.append(". ");
+        	} else {
+        		for(Map.Entry<String, String> entry : morseCodeMap.entrySet()) {
+        			if(entry.getValue().equals(morseChar)) {
+        				textBuilder.append(entry.getKey());
+        				break;
+        			}
+        		}
+        	}
         }
         return textBuilder.toString().trim();
     }

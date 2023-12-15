@@ -49,6 +49,8 @@ public class MorseCodeConverter implements CodeConverter {
     @Override
     public String encode(String text) {
         StringBuilder morseCodeBuilder = new StringBuilder();
+        
+        boolean midDot = false; // untuk mengecek jika di tengah ada titik
         for (char c : text.toUpperCase().toCharArray()) {
             if (Character.isLetterOrDigit(c)) {
                 String morseChar = morseCodeMap.get(String.valueOf(c));
@@ -56,7 +58,15 @@ public class MorseCodeConverter implements CodeConverter {
                     morseCodeBuilder.append(morseChar).append(" ");
                 }
             } else if (Character.isWhitespace(c)) {
-                morseCodeBuilder.append(" ");
+            	if(midDot == true) {
+            		morseCodeBuilder.append(" ");
+            		midDot = false;
+            	} else {
+            		morseCodeBuilder.append("\\ ");
+            	}
+            } else if(c == '.') {
+            	morseCodeBuilder.append("\\\\");
+            	midDot = true;
             }
         }
         return morseCodeBuilder.toString().trim();
@@ -65,7 +75,7 @@ public class MorseCodeConverter implements CodeConverter {
     @Override
     public String decode(String morseCode) { 
     	StringBuilder textBuilder = new StringBuilder();
-        String[] morseChars = morseCode.split(" ");  // Pemisah antar char
+        String[] morseChars = morseCode.split(" ");  // pemisah antar char
 
         for(String morseChar : morseChars) {
         	if(morseChar.equals("\\")) {	// mendeteksi pergantian kata

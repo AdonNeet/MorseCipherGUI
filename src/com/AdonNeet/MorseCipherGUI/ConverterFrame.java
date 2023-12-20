@@ -18,17 +18,16 @@ import javax.swing.JTextArea;
 import javax.swing.UIManager;
 
 class ConverterFrame implements ActionListener{
-    private JTextArea inputTextArea;
-    private JTextArea outputTextArea;
+	private JLabel inLabel, outLabel;
+    private JTextArea inputTextArea, outputTextArea;
     private MorseCodeConverter codeConverter = new MorseCodeConverter();
-    private JButton encodeButton;
-    private JButton decodeButton;
-    private JPanel panel, panel12;
+    private JButton encodeButton, decodeButton;
+    private JPanel panel, panel11, panel12, panel13;
     private GridBagConstraints gbc;
     private JScrollPane inputArea, outputArea;
 
     public ConverterFrame() {	// it's still suck tho, but yeah, let make it more better
-    	// UIManager.put("Label.font", new Font("Arial", Font.PLAIN, 20));
+    	UIManager.put("Label.font", new Font("Arial", Font.PLAIN, 20));
         UIManager.put("Button.font", new Font("Helvetica", Font.PLAIN, 20));
         UIManager.put("TextArea.font", new Font("Helvetica", Font.PLAIN, 16));
     	
@@ -39,14 +38,18 @@ class ConverterFrame implements ActionListener{
         panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         panel.setLayout(new GridLayout(3, 1));
         
+        panel11 = new JPanel(new BorderLayout());
         panel12 = new JPanel(new GridBagLayout());
+        panel13 = new JPanel(new BorderLayout());
         
+        inLabel = new JLabel("  Input");
         inputTextArea = new JTextArea();
         inputTextArea.setSize(new Dimension(370, 150));
         inputTextArea.setLineWrap(true);
         inputTextArea.setWrapStyleWord(true);
         inputArea = new JScrollPane(inputTextArea);
 
+        outLabel = new JLabel("  Output");
         outputTextArea = new JTextArea();
         outputTextArea.setSize(new Dimension(370, 150));
         outputTextArea.setLineWrap(true);
@@ -56,20 +59,27 @@ class ConverterFrame implements ActionListener{
 
         
         encodeButton = new JButton("Encode");
-        // encodeButton.setSize(new Dimension(150, 100));
+        encodeButton.setSize(new Dimension(150, 100));
         decodeButton = new JButton("Decode");
-        // decodeButton.setSize(new Dimension(150, 100));
+        decodeButton.setSize(new Dimension(150, 100));
 
         encodeButton.addActionListener(this);
         decodeButton.addActionListener(this);
+        
+        panel11.add(inLabel, BorderLayout.WEST);
+        panel11.add(inputArea, BorderLayout.EAST);
        
+        panel12.add(new JLabel("              "));
         panel12.add(encodeButton, gbc);
-        panel12.add(new JLabel("                          "));
+        panel12.add(new JLabel("              "));
         panel12.add(decodeButton, gbc);
         
-        panel.add(inputArea);
+        panel13.add(outLabel, BorderLayout.WEST);
+        panel13.add(outputArea, BorderLayout.EAST);
+        
+        panel.add(panel11, BorderLayout.CENTER);
         panel.add(panel12, BorderLayout.CENTER);
-        panel.add(outputArea);
+        panel.add(panel13, BorderLayout.CENTER);
     }
 
     @Override
